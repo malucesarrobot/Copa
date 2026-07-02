@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Álbum Copa Panini</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f2f2f2;margin:20px}
+h1{text-align:center;color:#0b6d3a}
+input[type=text]{width:100%;padding:10px;font-size:16px;margin-bottom:20px;box-sizing:border-box}
+details{background:#fff;margin-bottom:10px;padding:8px;border-radius:8px}
+summary{font-weight:bold;cursor:pointer;font-size:18px}
+label{display:inline-block;margin:4px 8px;font-size:16px}
+</style>
+</head>
+<body>
+<h1>Álbum Copa Panini</h1>
+<input type="text" id="busca" placeholder="Pesquisar país ou número">
+<div id="lista"></div>
+<script>
+const dados={
+ARG:[2,3,11],AUS:[3,8],BEL:[12,20],BIH:[13,19,20],BRA:[2],CAN:[11],
+COD:[5,8,8,11,12,12,14,17,20],COL:[3,5,5,7,11,11,16,16,17],CPV:[15,18,19],
+CRO:[13,14],CWU:[1,6,8,15],CZE:[18,19],CIV:[13,18],ECU:[11],EGY:[18],
+ENG:[13,16],ESP:[2],FRA:[17,20],FWC:[7],GER:[2,5],GHA:[7],HAI:[13,13],
+IRN:[7,12,12,13],IRQ:[1,8,11,16,18],JPN:[17],KOR:[2,6,14],MAR:[7,9],
+MEX:[4,18],NOR:[13],NZL:[14],PAR:[5,8],POR:[12,12],QAT:[5],SCO:[14,18,18],
+SUI:[6,13,13,18,18],SWE:[9,14,18,19],TUN:[5,7,8,9,13,13,20],
+TUR:[1,1,2,3,4,5],URU:[4],USA:[7],UZB:[4,4,13,14]};
+const lista=document.getElementById("lista");
+function montar(){
+lista.innerHTML="";
+Object.keys(dados).sort().forEach(p=>{
+ let d=document.createElement("details");d.open=true;
+ let s=document.createElement("summary");s.textContent=p;d.appendChild(s);
+ dados[p].forEach((n,i)=>{
+   let k=p+"-"+i;
+   let l=document.createElement("label");
+   let c=document.createElement("input");
+   c.type="checkbox";
+   c.checked=localStorage.getItem(k)==="1";
+   c.onchange=()=>localStorage.setItem(k,c.checked?"1":"0");
+   l.appendChild(c);l.append(" "+n);d.appendChild(l);
+ });
+ lista.appendChild(d);
+});
+}
+montar();
+busca.oninput=function(){
+ let t=this.value.toUpperCase();
+ document.querySelectorAll("details").forEach(d=>{
+  d.style.display=d.innerText.toUpperCase().includes(t)?"block":"none";
+ });
+};
+</script>
+</body>
+</html>
